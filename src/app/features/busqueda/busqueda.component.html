@@ -1,0 +1,64 @@
+<div class="busqueda-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-header">
+        <h2>Búsqueda</h2>
+        <p class="text-muted">Busca información en el sistema</p>
+      </div>
+
+      <!-- Formulario de búsqueda -->
+      <div class="search-card card shadow-sm mb-4">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-10">
+              <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white">
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ingresa tu búsqueda..."
+                  [(ngModel)]="searchTerm"
+                  (keyup.enter)="search()">
+              </div>
+            </div>
+            <div class="col-md-2 d-grid gap-2">
+              <button class="btn btn-primary btn-lg" (click)="search()">Buscar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultados -->
+      <div *ngIf="searchResults.length > 0" class="results-section">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>Resultados encontrados: {{ searchResults.length }}</h5>
+          <button class="btn btn-outline-secondary btn-sm" (click)="clearSearch()">Limpiar búsqueda</button>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3" *ngFor="let result of searchResults">
+            <div class="card result-card">
+              <div class="card-body">
+                <h5 class="card-title">{{ result.title }}</h5>
+                <p class="card-text text-muted">{{ result.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">{{ result.date | date:'short' }}</small>
+                  <a href="#" class="btn btn-sm btn-outline-primary">Ver detalle</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin resultados -->
+      <div *ngIf="searchTerm && searchResults.length === 0" class="alert alert-info">
+        No se encontraron resultados para tu búsqueda.
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+<div class="feature2-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="page-header">
+        <h2>Feature 2 - Formulario de Contacto</h2>
+        <p class="text-muted">Complete el formulario para enviar su solicitud</p>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form #contactForm="ngForm" (ngSubmit)="submitForm()">
+            <div class="row">
+              <!-- Nombre -->
+              <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label">Nombre completo <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombre"
+                  name="nombre"
+                  [(ngModel)]="formData.nombre"
+                  required
+                  placeholder="Ingrese su nombre">
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Correo electrónico <span class="text-danger">*</span></label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  [(ngModel)]="formData.email"
+                  required
+                  placeholder="correo@ejemplo.com">
+              </div>
+
+              <!-- Teléfono -->
+              <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label">Teléfono</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="telefono"
+                  name="telefono"
+                  [(ngModel)]="formData.telefono"
+                  placeholder="+34 600 000 000">
+              </div>
+
+              <!-- Categoría -->
+              <div class="col-md-6 mb-3">
+                <label for="categoria" class="form-label">Categoría <span class="text-danger">*</span></label>
+                <select
+                  class="form-select"
+                  id="categoria"
+                  name="categoria"
+                  [(ngModel)]="formData.categoria"
+                  required>
+                  <option value="" disabled selected>Seleccione una categoría</option>
+                  <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+                </select>
+              </div>
+
+              <!-- Mensaje -->
+              <div class="col-12 mb-3">
+                <label for="mensaje" class="form-label">Mensaje <span class="text-danger">*</span></label>
+                <textarea
+                  class="form-control"
+                  id="mensaje"
+                  name="mensaje"
+                  [(ngModel)]="formData.mensaje"
+                  rows="5"
+                  required
+                  placeholder="Escriba su mensaje aquí..."></textarea>
+              </div>
+
+              <!-- Botones -->
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2">
+                  <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">
+                    Limpiar
+                  </button>
+                  <button type="submit" class="btn btn-primary" [disabled]="!contactForm.valid">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16" class="me-1">
+                      <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                    </svg>
+                    Enviar Formulario
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="info-section mt-4">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="info-card card text-center">
+              <div class="card-body">
+                <div class="info-icon mb-2">
+                  <svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12V6a5 5 0 0 0-5-5z"/>
+                  </svg>
+                </div>
+                <h6>Soporte 24/7</h6>
+                <p class="text-muted small mb-0">Estamos aquí para ayudarte</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="info-card card text-center">
+              <div class="card-body">
+                <div class="info-icon mb-2">
+                  <svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                  </svg>
+                </div>
+                <h6>Respuesta Rápida</h6>
+                <p class="text-muted small mb-0">Contestamos en 24h</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="info-card card text-center">
+              <div class="card-body">
+                <div class="info-icon mb-2">
+                  <svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                  </svg>
+                </div>
+                <h6>Ubicación</h6>
+                <p class="text-muted small mb-0">Madrid, España</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<!-- Top Navbar Roja -->
+<nav class="top-navbar">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- Logo y Nombre -->
+      <div class="d-flex align-items-center">
+        <!-- Botón hamburguesa (solo móvil) -->
+        <button class="hamburger-btn" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="logo">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="white"/>
+            <path d="M20 10L30 20L20 30L10 20L20 10Z" fill="#EC0000"/>
+          </svg>
+        </div>
+        <span class="brand-name ms-3">Santander</span>
+      </div>
+
+      <!-- Usuario y Logout -->
+      <div class="user-info d-flex align-items-center">
+        <div class="user-avatar me-2">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="16" fill="white" opacity="0.2"/>
+            <circle cx="16" cy="12" r="5" fill="white"/>
+            <path d="M8 26C8 21.5817 11.5817 18 16 18C20.4183 18 24 21.5817 24 26" fill="white"/>
+          </svg>
+        </div>
+        <span class="user-name">{{ userName() }}</span>
+        <button class="logout-btn ms-3" (click)="logout()" title="Cerrar sesión">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Menu Horizontal / Móvil -->
+<nav class="horizontal-menu" [class.mobile-open]="mobileMenuOpen()">
+  <!-- Overlay para cerrar el menú en móvil -->
+  @if (mobileMenuOpen()) {
+    <div class="mobile-overlay" (click)="closeMobileMenu()"></div>
+  }
+
+  <div class="menu-container" [class.mobile-open]="mobileMenuOpen()">
+    <!-- Header del menú móvil -->
+    <div class="mobile-menu-header">
+      <span class="mobile-menu-title">Menú</span>
+      <button class="mobile-close-btn" (click)="closeMobileMenu()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+      </button>
+    </div>
+
+    <ul class="menu-list">
+      <li *ngFor="let item of menuItems" class="menu-item" [class.has-submenu]="item.children">
+        <!-- Link principal -->
+        <div class="menu-link-wrapper">
+          @if (item.children) {
+            <!-- Si tiene hijos, usar span en lugar de link -->
+            <span
+              class="menu-link"
+              [class.active]="isRouteActive(item.route)"
+            >
+              {{ item.label }}
+              <svg class="submenu-icon desktop-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <path d="M6 8L2 4h8L6 8z"/>
+              </svg>
+            </span>
+          } @else {
+            <!-- Si no tiene hijos, usar link normal -->
+            <a
+              [routerLink]="item.route"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: false }"
+              class="menu-link"
+              (click)="closeMobileMenu()"
+            >
+              {{ item.label }}
+            </a>
+          }
+
+          <!-- Botón para expandir submenú en móvil -->
+          @if (item.children) {
+            <button
+              class="submenu-toggle-btn"
+              (click)="toggleSubmenu(item); $event.stopPropagation()"
+              [class.open]="item.mobileOpen"
+            >
+              <svg class="submenu-icon mobile-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                <path d="M6 8L2 4h8L6 8z"/>
+              </svg>
+            </button>
+          }
+        </div>
+
+        <!-- Submenú desplegable -->
+        @if (item.children) {
+          <ul class="submenu" [class.mobile-open]="item.mobileOpen">
+            <li *ngFor="let child of item.children" class="submenu-item">
+              <a
+                [routerLink]="child.route"
+                routerLinkActive="active-submenu"
+                class="submenu-link"
+                (click)="closeMobileMenu()"
+              >
+                {{ child.label }}
+              </a>
+            </li>
+          </ul>
+        }
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="main-content">
+  <div class="container-fluid py-4">
+    <router-outlet></router-outlet>
+  </div>
+</main>

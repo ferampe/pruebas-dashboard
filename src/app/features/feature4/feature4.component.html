@@ -1,0 +1,196 @@
+<div class="feature4-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="page-header">
+        <h2>Feature 4 - Búsqueda Avanzada</h2>
+        <p class="text-muted">Complete los 3 campos para realizar la búsqueda</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulario de Búsqueda -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="search-card card shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-funnel-fill me-2"></i>
+            Formulario de Búsqueda
+          </h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+            <div class="row g-3">
+              <!-- Campo 1 -->
+              <div class="col-md-4">
+                <label for="campo1" class="form-label fw-semibold">
+                  Campo 1
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="campo1"
+                  formControlName="campo1"
+                  class="form-control"
+                  [class.is-invalid]="searchForm.get('campo1')?.invalid && searchForm.get('campo1')?.touched"
+                  placeholder="Ingrese valor">
+                <div class="invalid-feedback" *ngIf="searchForm.get('campo1')?.invalid && searchForm.get('campo1')?.touched">
+                  <span *ngIf="searchForm.get('campo1')?.errors?.['required']">Campo 1 es requerido</span>
+                  <span *ngIf="searchForm.get('campo1')?.errors?.['minlength']">Mínimo 2 caracteres</span>
+                </div>
+              </div>
+
+              <!-- Campo 2 -->
+              <div class="col-md-4">
+                <label for="campo2" class="form-label fw-semibold">
+                  Campo 2
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="campo2"
+                  formControlName="campo2"
+                  class="form-control"
+                  [class.is-invalid]="searchForm.get('campo2')?.invalid && searchForm.get('campo2')?.touched"
+                  placeholder="Ingrese valor">
+                <div class="invalid-feedback" *ngIf="searchForm.get('campo2')?.invalid && searchForm.get('campo2')?.touched">
+                  <span *ngIf="searchForm.get('campo2')?.errors?.['required']">Campo 2 es requerido</span>
+                  <span *ngIf="searchForm.get('campo2')?.errors?.['minlength']">Mínimo 2 caracteres</span>
+                </div>
+              </div>
+
+              <!-- Campo 3 -->
+              <div class="col-md-4">
+                <label for="campo3" class="form-label fw-semibold">
+                  Campo 3
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="campo3"
+                  formControlName="campo3"
+                  class="form-control"
+                  [class.is-invalid]="searchForm.get('campo3')?.invalid && searchForm.get('campo3')?.touched"
+                  placeholder="Ingrese valor">
+                <div class="invalid-feedback" *ngIf="searchForm.get('campo3')?.invalid && searchForm.get('campo3')?.touched">
+                  <span *ngIf="searchForm.get('campo3')?.errors?.['required']">Campo 3 es requerido</span>
+                  <span *ngIf="searchForm.get('campo3')?.errors?.['minlength']">Mínimo 2 caracteres</span>
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div class="col-12">
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="clearForm()"
+                    [disabled]="isLoading()">
+                    <i class="bi bi-x-circle me-1"></i>
+                    Limpiar
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="!searchForm.valid || isLoading()">
+                    <span *ngIf="!isLoading()">
+                      <i class="bi bi-search me-1"></i>
+                      Buscar
+                    </span>
+                    <span *ngIf="isLoading()">
+                      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                      Buscando...
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Mensaje de ayuda -->
+              <div class="col-12" *ngIf="!searchForm.valid && !hasSearched()">
+                <div class="alert alert-info mb-0">
+                  <i class="bi bi-info-circle me-2"></i>
+                  Por favor, complete los 3 campos para habilitar el botón de búsqueda.
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de Error -->
+  <div class="row mb-3" *ngIf="error()">
+    <div class="col-12">
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error:</strong> {{ error() }}
+        <button type="button" class="btn-close" (click)="error.set(null)"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Resultados (solo se muestra después de buscar) -->
+  <div class="row" *ngIf="hasSearched()">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="bi bi-table me-2"></i>
+              Resultados de la Búsqueda
+              <span class="badge bg-primary ms-2">{{ data().length }}</span>
+            </h5>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <!-- Loading State -->
+          <div *ngIf="isLoading()" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3 text-muted">Cargando datos...</p>
+          </div>
+
+          <!-- Tabla con datos -->
+          <div class="table-responsive" *ngIf="!isLoading() && data().length > 0">
+            <table class="table table-hover table-striped mb-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Valor</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of data()">
+                  <td>{{ item.id }}</td>
+                  <td><strong>{{ item.name }}</strong></td>
+                  <td>${{ item.value | number:'1.2-2' }}</td>
+                  <td><span [class]="getStatusClass(item.status)">{{ item.status }}</span></td>
+                  <td>{{ item.date | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <button class="btn btn-sm btn-outline-primary me-1">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sin resultados -->
+          <div *ngIf="!isLoading() && data().length === 0" class="text-center py-5">
+            <i class="bi bi-inbox" style="font-size: 3rem; color: #ccc;"></i>
+            <p class="mt-3 text-muted">No se encontraron resultados</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
