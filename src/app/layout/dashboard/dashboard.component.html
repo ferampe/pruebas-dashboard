@@ -66,7 +66,7 @@
             <!-- Si tiene hijos, usar span en lugar de link -->
             <span
               class="menu-link"
-              [class.active]="isRouteActive(item.route)"
+              [class.active]="isMenuItemActive(item)"
             >
               {{ item.label }}
               <svg class="submenu-icon desktop-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">

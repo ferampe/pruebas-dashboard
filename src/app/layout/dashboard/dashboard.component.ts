@@ -40,7 +40,7 @@ export class DashboardComponent {
     },
     {
       label: 'Feature 1',
-      route: '/dashboard/feature1',
+      route: '', // Sin ruta, solo contenedor de menú
       icon: 'bar-chart',
       mobileOpen: false,
       children: [
@@ -51,7 +51,7 @@ export class DashboardComponent {
     },
     {
       label: 'Feature 2',
-      route: '/dashboard/feature2',
+      route: '', // Sin ruta, solo contenedor de menú
       icon: 'settings',
       mobileOpen: false,
       children: [
@@ -93,8 +93,28 @@ export class DashboardComponent {
   }
 
   isRouteActive(route: string): boolean {
+    // Si no tiene ruta (es solo contenedor), no marcar directamente
+    if (!route || route === '') {
+      return false;
+    }
     // Verificar si alguna subruta está activa
     return location.pathname.startsWith(route);
+  }
+
+  isMenuItemActive(item: MenuItem): boolean {
+    // Si tiene ruta propia, verificar esa ruta
+    if (item.route && item.route !== '') {
+      return location.pathname.startsWith(item.route);
+    }
+
+    // Si no tiene ruta pero tiene hijos, verificar si algún hijo está activo
+    if (item.children && item.children.length > 0) {
+      return item.children.some(child =>
+        location.pathname.startsWith(child.route)
+      );
+    }
+
+    return false;
   }
 
   logout(): void {
